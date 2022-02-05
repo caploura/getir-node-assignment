@@ -1,19 +1,19 @@
 import { MongoClient } from "mongodb";
 
-import { Record } from "../types/payload";
+// Use .env file as environment configuration
+import dotenv from "dotenv";
+dotenv.config();
 
-const mongoDbConnection = async () => {
-  const username = process.env.MONGODB_USERNAME || "";
-  const password = process.env.MONGODB_PASSWORD || "";
+const username = process.env.MONGODB_USERNAME || "";
+const password = process.env.MONGODB_PASSWORD || "";
+const database = process.env.MONGODB_DATABASE || "";
+const collection = process.env.MONGODB_COLLECTION || "";
 
-  const mongoDbUrl = `mongodb+srv://${username}:${password}@challenge-xzwqd.mongodb.net/getircase-study?retryWrites=true`;
+const mongoDbUrl = `mongodb+srv://${username}:${password}@challenge-xzwqd.mongodb.net/${database}?retryWrites=true`;
+let client: MongoClient = new MongoClient(mongoDbUrl);
 
-  const client = new MongoClient(mongoDbUrl);
-  return await client.connect();
-};
-
-const mongoDbCloseConnection = async (client: any) => {
-  await client.close();
+export const mongoDbConnection = async () => {
+  client = await client.connect();
 };
 
 export const mongoDbQueryDataByDateAndTotalCount = async (
@@ -22,10 +22,7 @@ export const mongoDbQueryDataByDateAndTotalCount = async (
   maxCount: number,
   minCount: number
 ) => {
-  const dbName = process.env.MONGODB_DATABASE || "";
-  const collectionName = process.env.MONGODB_COLLECTION || "";
-
-  const client = await mongoDbConnection();
+  await mongoDbConnection();
 
   try {
     console.log(
@@ -68,15 +65,12 @@ export const mongoDbQueryDataByDateAndTotalCount = async (
       },
     ];
 
-    const collectionRecords = client.db(dbName).collection(collectionName);
+    const collectionRecords = client.db(database).collection(collection);
 
     return await collectionRecords.aggregate(agg).toArray();
-
-    // await recordsCursor.forEach(console.dir);
-    // await mongoDbCloseConnection(client);
   } catch (error) {
+    console.log(`Error:`);
     console.log(error);
-  } finally {
-    await mongoDbCloseConnection(client);
+    throw new Error("Failed to query MongoDB");
   }
 };

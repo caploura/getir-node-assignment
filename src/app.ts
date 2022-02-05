@@ -6,10 +6,6 @@ import { validateRequestPayload } from "./validation/payload";
 
 import { mongoDbQueryDataByDateAndTotalCount } from "./mongodb/functions";
 
-// Use .env file as environment configuration
-import dotenv from "dotenv";
-dotenv.config();
-
 const app: Application = express();
 app.use(bodyParser.json());
 

@@ -7,7 +7,7 @@
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
     "build": "tsc -p tsconfig.json",
-    "test": "jest -c ./jest.unit.json --coverage"
+    "test": "jest -c ./jest.unit.json --coverage --forceExit"
   },
   "repository": {
     "type": "git",
