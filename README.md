@@ -1,7 +1,5 @@
 ## getir-node-assignment
 
-Getir NodeJS Assignment
-
 # Instructions:
 
     Run: npm install
@@ -21,4 +19,5 @@ Getir NodeJS Assignment
 
 # To run:
 
-    npm start (Endpoint: http://localhost:3000/fetchByDateAndTotalCount)
+    npm start
+    (Endpoint: http://localhost:3000/fetchByDateAndTotalCount)
