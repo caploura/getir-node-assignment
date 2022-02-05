@@ -1,6 +1,4 @@
-import {MongoClient} from 'mongodb';
-
-import { Data } from '../types/data';
+import { MongoClient } from 'mongodb';
 
 const mongoDbConnection = async () => {
     const username = process.env.MONGODB_USERNAME || '';
@@ -19,6 +17,8 @@ const mongoDbCloseConnection = async (client: any) => {
 export const mongoDbQueryDataByDateAndTotalCount = async(startDate: Date, endDate: Date, maxCount: number, minCount: number) => {
     const dbName = process.env.MONGODB_DATABASE || '';
     const collectionName = process.env.MONGODB_COLLECTION || "";
+
+    const client = await mongoDbConnection();
 
     try {
 
@@ -60,7 +60,6 @@ export const mongoDbQueryDataByDateAndTotalCount = async(startDate: Date, endDat
             }
         ];
 
-        const client = await mongoDbConnection();
         const collectionRecords = client.db(dbName).collection(collectionName);
 
         return await collectionRecords.aggregate(agg).toArray();
@@ -70,5 +69,7 @@ export const mongoDbQueryDataByDateAndTotalCount = async(startDate: Date, endDat
 
     } catch(error) {
         console.log(error);
+    } finally {
+        await mongoDbCloseConnection(client);
     }
 }
