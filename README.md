@@ -5,7 +5,7 @@
     npm install
 
     Configure the following variables in your .env file:
-        PORT -> Port where this application will be listening for requests
+        PORT (Port where this application will be listening for requests)
 
         MONGODB_USERNAME (MongoDB username)
         MONGODB_PASSWORD (MongoDB password)
