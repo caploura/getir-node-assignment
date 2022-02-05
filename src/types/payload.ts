@@ -1,3 +1,5 @@
+import { Document } from "mongodb";
+
 export interface RequestPayload {
   startDate: Date;
   endDate: Date;
@@ -8,7 +10,7 @@ export interface RequestPayload {
 export interface ResponsePayload {
   code: number;
   msg: string;
-  records?: Record[];
+  records?: Document[];
 }
 
 export interface Record {

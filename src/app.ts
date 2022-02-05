@@ -2,7 +2,10 @@ import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 
 import { RequestPayload, ResponsePayload } from "./types/payload";
-import { validateRequestPayload } from "./validation/payload";
+import {
+  validateRequestPayload,
+  validateResponsePayload,
+} from "./validation/payload";
 
 import { mongoDbQueryDataByDateAndTotalCount } from "./mongodb/functions";
 
@@ -44,12 +47,17 @@ app.post("/fetchByDateAndTotalCount", async (req: Request, res: Response) => {
     );
 
     // Send success ResponsePayload
-    let responsePayload = {
+    let responsePayload: ResponsePayload = {
       code: 0,
       msg: "Success",
       records: records,
     };
-    res.status(200).send(responsePayload);
+
+    if (validateResponsePayload(responsePayload).valid) {
+      res.status(200).send(responsePayload);
+    } else {
+      throw new Error("The Response Payload is not valid.");
+    }
   } catch (error) {
     console.log(error);
     let responsePayload: ResponsePayload = {
