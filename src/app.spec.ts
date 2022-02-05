@@ -295,6 +295,7 @@ describe("POST /fetchByDateAndTotalCount", () => {
         .send({
           startDate: "2015-11-28T11:46:29.706+00:00",
           endDate: "2015-11-28T11:48:29.706+00:00",
+          minCount: 0,
           maxCount: 4500,
         });
 
@@ -307,9 +308,10 @@ describe("POST /fetchByDateAndTotalCount", () => {
       const res: Response = await request(app)
         .post("/fetchByDateAndTotalCount")
         .send({
-          startDate: "2015-11-28T11:46:29.706+00:00",
-          endDate: "2015-11-28T11:48:29.706+00:00",
-          maxCount: 4500,
+          startDate: "2010-11-28T11:46:29.706+00:00",
+          endDate: "2019-11-28T11:48:29.706+00:00",
+          minCount: 0,
+          maxCount: 10000,
         });
 
       expect(validateResponsePayload(res.body).valid).toEqual(true);

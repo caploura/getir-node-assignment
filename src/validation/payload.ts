@@ -29,8 +29,12 @@ export const validateRequestPayload = (p: RequestPayload) => {
 export const validateResponsePayload = (p: ResponsePayload) => {
   const v = Joi.object({
     code: Joi.number().required(),
-    msg: Joi.string().required(),
-    records: Joi.number(),
+    msg: Joi.string().min(1).required(),
+    records: Joi.array().items({
+      key: Joi.string().min(1).required(),
+      createdAt: Joi.date().required(),
+      totalCount: Joi.number().required(),
+    }),
   });
 
   const validation = v.validate({
