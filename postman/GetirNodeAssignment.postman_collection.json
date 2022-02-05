@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "b63718cf-7f21-4ea3-8157-4bcc848f0105",
+		"name": "GetirNodeAssignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2015-11-28T11:46:29.706+00:00\",\r\n    \"endDate\": \"2020-11-28T11:48:29.706+00:00\",\r\n    \"minCount\": 0,\r\n    \"maxCount\": 4500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/fetchByDateAndTotalCount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"fetchByDateAndTotalCount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2015-11-28T11:46:29.706+00:00\",\r\n    \"endDate\": \"2015-11-28T11:48:29.706+00:00\",\r\n    \"minCount\": 0,\r\n    \"maxCount\": 4500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://getir-nodejs-assignment-cl.herokuapp.com/fetchByDateAndTotalCount",
+					"protocol": "https",
+					"host": [
+						"getir-nodejs-assignment-cl",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fetchByDateAndTotalCount"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
