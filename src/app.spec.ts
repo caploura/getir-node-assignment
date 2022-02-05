@@ -280,10 +280,53 @@ describe("POST /fetchByDateAndTotalCount", () => {
       const res: Response = await request(app)
         .post("/fetchByDateAndTotalCount")
         .send({
+          startDate: "2015-01-27T01:20:48.978+00:00",
+          endDate: "2020-01-29T10:59:48.978+00:00",
+          minCount: 0,
+          maxCount: 1000,
+        });
+
+      expect(res.statusCode).toBe(200);
+    });
+
+    test("Should respond with a JSON message (Content-type)", async () => {
+      const res: Response = await request(app)
+        .post("/fetchByDateAndTotalCount")
+        .send({
+          startDate: "2015-01-27T01:20:48.978+00:00",
+          endDate: "2020-01-29T10:59:48.978+00:00",
+          minCount: 0,
+          maxCount: 1000,
+        });
+
+      expect(res.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+    });
+
+    test("Message should be of type ResponsePayload", async () => {
+      const res: Response = await request(app)
+        .post("/fetchByDateAndTotalCount")
+        .send({
+          startDate: "2015-01-27T01:20:48.978+00:00",
+          endDate: "2020-01-29T10:59:48.978+00:00",
+          minCount: 0,
+          maxCount: 1000,
+        });
+
+      expect(validateResponsePayload(res.body).valid).toEqual(true);
+    });
+  });
+
+  describe("When everything is provided but no records are found", () => {
+    test("Should respond with a 200 - OK", async () => {
+      const res: Response = await request(app)
+        .post("/fetchByDateAndTotalCount")
+        .send({
           startDate: "2015-11-28T11:46:29.706+00:00",
           endDate: "2015-11-28T11:48:29.706+00:00",
           minCount: 0,
-          maxCount: 4500,
+          maxCount: 1,
         });
 
       expect(res.statusCode).toBe(200);
@@ -296,7 +339,7 @@ describe("POST /fetchByDateAndTotalCount", () => {
           startDate: "2015-11-28T11:46:29.706+00:00",
           endDate: "2015-11-28T11:48:29.706+00:00",
           minCount: 0,
-          maxCount: 4500,
+          maxCount: 1,
         });
 
       expect(res.headers["content-type"]).toEqual(
@@ -311,7 +354,7 @@ describe("POST /fetchByDateAndTotalCount", () => {
           startDate: "2010-11-28T11:46:29.706+00:00",
           endDate: "2019-11-28T11:48:29.706+00:00",
           minCount: 0,
-          maxCount: 10000,
+          maxCount: 1,
         });
 
       expect(validateResponsePayload(res.body).valid).toEqual(true);
