@@ -1,18 +1,18 @@
 export interface RequestPayload {
-    startDate: Date;
-    endDate: Date;
-    minCount: number;
-    maxCount: number;
+  startDate: Date;
+  endDate: Date;
+  minCount: number;
+  maxCount: number;
 }
 
 export interface ResponsePayload {
-    code: number;
-    message: string;
-    records?: Records[];
+  code: number;
+  msg: string;
+  records?: Record[];
 }
 
-interface Records {
-    key: string;
-    createdAt: Date;
-    totalCount: number;
+export interface Record {
+  key: string;
+  createdAt: Date;
+  totalCount: number;
 }

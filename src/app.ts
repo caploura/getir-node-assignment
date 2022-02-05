@@ -23,7 +23,7 @@ app.post("/fetchByDateAndTotalCount", async (req: Request, res: Response) => {
       // Reply with a 400 - Bad Request if the input isn't valid
       let responsePayload: ResponsePayload = {
         code: 1,
-        message: validation.message,
+        msg: validation.message,
       };
       res.status(400).send(responsePayload);
       return null;
@@ -33,7 +33,7 @@ app.post("/fetchByDateAndTotalCount", async (req: Request, res: Response) => {
       // Reply with a 400 - Bad Request if the received maxCount is greater then the minCount
       let responsePayload: ResponsePayload = {
         code: 2,
-        message: "The maxCount must be greater then the minCount.",
+        msg: "The maxCount must be greater then the minCount.",
       };
       res.status(400).send(responsePayload);
       return null;
@@ -48,13 +48,17 @@ app.post("/fetchByDateAndTotalCount", async (req: Request, res: Response) => {
     );
 
     // Send success ResponsePayload
-    let responsePayload = { code: 0, message: "Success", records: records };
+    let responsePayload = {
+      code: 0,
+      msg: "Success",
+      records: records,
+    };
     res.status(200).send(responsePayload);
   } catch (error) {
     console.log(error);
     let responsePayload: ResponsePayload = {
       code: 500,
-      message: "Internal Server Error",
+      msg: "Internal Server Error",
     };
     res.status(500).send(responsePayload);
   }
@@ -64,7 +68,7 @@ app.post("/fetchByDateAndTotalCount", async (req: Request, res: Response) => {
 app.all("*", (req: Request, res: Response) => {
   const responsePayload: ResponsePayload = {
     code: 404,
-    message: "Route not found.",
+    msg: "Route not found.",
   };
   res.status(404).send(responsePayload);
 });

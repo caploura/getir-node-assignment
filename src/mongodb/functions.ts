@@ -1,5 +1,7 @@
 import { MongoClient } from "mongodb";
 
+import { Record } from "../types/payload";
+
 const mongoDbConnection = async () => {
   const username = process.env.MONGODB_USERNAME || "";
   const password = process.env.MONGODB_PASSWORD || "";

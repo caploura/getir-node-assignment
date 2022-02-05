@@ -29,13 +29,13 @@ export const validateRequestPayload = (p: RequestPayload) => {
 export const validateResponsePayload = (p: ResponsePayload) => {
   const v = Joi.object({
     code: Joi.number().required(),
-    message: Joi.string().required(),
+    msg: Joi.string().required(),
     records: Joi.number(),
   });
 
   const validation = v.validate({
     code: p.code,
-    message: p.message,
+    msg: p.msg,
     records: p.records,
   });
 
