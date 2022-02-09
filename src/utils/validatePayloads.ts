@@ -17,9 +17,6 @@ export const validateRequestPayload = (p: RequestPayload) => {
   });
 
   if (validation.error) {
-    console.log(
-      "RequestPayload validation error: " + validation.error.details[0].message
-    );
     return { valid: false, message: validation.error.details[0].message };
   } else {
     return { valid: true, message: "Valid" };

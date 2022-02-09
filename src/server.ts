@@ -2,14 +2,19 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import { Logger } from "./utils/logger";
+
 import app from "./app";
-import { mongoDbConnection } from "./mongodb/functions";
+import { mongoDbConnection } from "./core/mongoDbFunctions";
 
 const run = async () => {
+  const logger = Logger.getLogger();
+
   await mongoDbConnection();
+
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log(`Running -> Listening on port ${PORT}`);
+    logger.info(`Running -> Listening on port ${PORT}`);
   });
 };
 

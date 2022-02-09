@@ -1,80 +1,23 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
 import bodyParser from "body-parser";
 
-import { RequestPayload, ResponsePayload } from "./types/payload";
-import {
-  validateRequestPayload,
-  validateResponsePayload,
-} from "./validation/payload";
+const mongoDbRoutes = require("./routes/mongoDbRoutes");
+const defaultRoutes = require("./routes/default");
 
-import { mongoDbQueryDataByDateAndTotalCount } from "./mongodb/functions";
+import { middlewareValidateRequestPayload } from "./middleware/validatePayload";
 
 const app: Application = express();
+
+// Use JSON body parser
 app.use(bodyParser.json());
 
-// POST /fetchByDateAndTotalCount
-app.post("/fetchByDateAndTotalCount", async (req: Request, res: Response) => {
-  try {
-    let requestPayload: RequestPayload = req.body;
+// Use the request payload validation middleware
+app.use(middlewareValidateRequestPayload);
 
-    const validation = validateRequestPayload(requestPayload);
-    if (!validation.valid) {
-      // Reply with a 400 - Bad Request if the input isn't valid
-      let responsePayload: ResponsePayload = {
-        code: 1,
-        msg: validation.message,
-      };
-      res.status(400).send(responsePayload);
-      return null;
-    }
+// Add mongoDbRoutes to app
+app.use(mongoDbRoutes);
 
-    if (requestPayload.maxCount < requestPayload.minCount) {
-      // Reply with a 400 - Bad Request if the received maxCount is greater then the minCount
-      let responsePayload: ResponsePayload = {
-        code: 2,
-        msg: "The maxCount must be greater then the minCount.",
-      };
-      res.status(400).send(responsePayload);
-      return null;
-    }
-
-    // Fetch data from MongoDB
-    const records = await mongoDbQueryDataByDateAndTotalCount(
-      requestPayload.startDate,
-      requestPayload.endDate,
-      requestPayload.maxCount,
-      requestPayload.minCount
-    );
-
-    // Send success ResponsePayload
-    let responsePayload: ResponsePayload = {
-      code: 0,
-      msg: "Success",
-      records: records,
-    };
-
-    if (validateResponsePayload(responsePayload).valid) {
-      res.status(200).send(responsePayload);
-    } else {
-      throw new Error("The Response Payload is not valid.");
-    }
-  } catch (error) {
-    console.log(error);
-    let responsePayload: ResponsePayload = {
-      code: 500,
-      msg: "Internal Server Error",
-    };
-    res.status(500).send(responsePayload);
-  }
-});
-
-// Reply with 404 - Not Found to all requests
-app.all("*", (req: Request, res: Response) => {
-  const responsePayload: ResponsePayload = {
-    code: 404,
-    msg: "Route not found.",
-  };
-  res.status(404).send(responsePayload);
-});
+// Add defaultRoutes to app
+app.use(defaultRoutes);
 
 export default app;
